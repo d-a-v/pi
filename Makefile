@@ -2,7 +2,7 @@ pi: pi.o
 	gcc pi.o -o pi -lpthread
 
 .c.o:
-	gcc -O3 -c $< -Wall
+	gcc -Ofast -march=native -c $< -Wall -Wextra
 
 clean:
 	rm -f pi.o pi

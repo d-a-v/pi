@@ -42,7 +42,8 @@ struct ProdPipeline {
  */
 static void calc_pi_component(uint32_t *sum, unsigned i)
 {
-	int firstnz, p2, j, sumOvl, loc;
+	unsigned firstnz, p2, j, sumOvl;
+	int loc;
 	uint32_t dig, dig0, remainders[7], div[7];
 	uint64_t dividend, resSum;
 
@@ -103,6 +104,8 @@ static void *piPartWorker(void *arg)
 	unsigned num;
 	int idx;
 
+    (void)arg;
+
 	pi_part = calloc(gWordPrec, sizeof(uint32_t));
 	while( 1 ) {
 		pthread_mutex_lock(&gMutex);
@@ -133,7 +136,8 @@ static void *printPiWorker(void *arg)
 	struct ProdPipeline *pp = arg;
 	uint32_t overflow;
 	uint64_t sum;
-	int idx, digitsRemain;
+	unsigned idx;
+	int digitsRemain;
 
 	for(digitsRemain = gDigPrec; digitsRemain >= 0; digitsRemain -= 9) {
 		if( pp->prev ) {
@@ -188,7 +192,8 @@ int main(int argc, char *argv[])
 	pthread_t *threads;
 	struct ProdPipeline *pp;
 	struct timeval tm_beg, tm_end, tm_diff;
-	unsigned i, threadCount, argno;
+	unsigned i, threadCount;
+	int argno;
 	int isSingleThreaded = 0, isPrintingSingle = 0;
 
 	for(argno = 1; argno < argc && argv[argno][0] == '-'; ++argno) {
