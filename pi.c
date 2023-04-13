@@ -7,6 +7,8 @@
 
 #define OVFL_CNT 16
 
+int isQuiet = 0;
+
 /* desired PI precision in digits */
 static unsigned gDigPrec;
 
@@ -154,6 +156,7 @@ static void *printPiWorker(void *arg)
 			pi[idx] = sum = 1000000000ULL * pi[idx] + (sum >> 32);
 		overflow = sum >> 32;
 		if( pp->first == 1 ) {
+if (!isQuiet) {
 			if( digitsRemain > 9 ) {
 				printf("%09u", overflow);
 			}else{
@@ -161,6 +164,7 @@ static void *printPiWorker(void *arg)
 				sprintf(buf, "%09u", overflow);
 				printf("%.*s\n", digitsRemain, buf);
 			}
+}
 		}else{
 			int isReady = 0;
 			while( ! isReady ) {
@@ -193,6 +197,8 @@ int main(int argc, char *argv[])
 				isSingleThreaded = 1;
 			else if( argv[argno][i] == 'P' )
 				isPrintingSingle = 1;
+			else if( argv[argno][i] == 'q' )
+				isQuiet = 1;
 		}
 	}
 	if( argno == argc ) {
@@ -200,7 +206,8 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "   pi [-1] [-P] <thousands of digits>\n\n");
 		fprintf(stderr, "options:\n");
 		fprintf(stderr, "   -1		- single threaded\n");
-		fprintf(stderr, "   -P		- print using one thread\n\n");
+		fprintf(stderr, "   -P		- print using one thread\n");
+		fprintf(stderr, "   -q		- no printing\n\n");
 		return 0;
 	}
 	gDigPrec = 1000 * atoi(argv[argno]);
