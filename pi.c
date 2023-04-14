@@ -208,7 +208,7 @@ int main(int argc, char *argv[])
 	}
 	if( argno == argc ) {
 		fprintf(stderr, "usage:\n");
-		fprintf(stderr, "   pi [-1] [-P] <thousands of digits>\n\n");
+		fprintf(stderr, "   pi [-1] [-P] [-q] <thousands of digits>\n\n");
 		fprintf(stderr, "options:\n");
 		fprintf(stderr, "   -1		- single threaded\n");
 		fprintf(stderr, "   -P		- print using one thread\n");
